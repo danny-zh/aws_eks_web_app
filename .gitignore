@@ -386,3 +386,5 @@ pip-selfcheck.json
 **/charts/*.tgz
 
 # End of https://www.toptal.com/developers/gitignore/api/helm
+
+kind
