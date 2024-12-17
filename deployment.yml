@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app.com
+  name: app.com
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app.com
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: app.com
+    spec:
+      containers:
+      - image: localhost:5000/app.com
+        name: app-com-cr45g
+        resources: {}
+status: {}
