@@ -16,7 +16,7 @@ spec:
         app: app.com
     spec:
       containers:
-      - image: localhost:5000/app.com
+      - image: localhost:5000/explorecalifornia
         name: app-com-cr45g
         resources: {}
 status: {}

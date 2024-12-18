@@ -1,7 +1,8 @@
 .PHONY: run_website stop_website install_kind create_kind_cluster \
 delete_kind_cluster create_docker_registry \
 connect_kind_network_with_local_registry connect_registry_to_kind \
-create_kind_cluster_with_registry delete_kind_cluster_with_registry
+create_kind_cluster_with_registry delete_kind_cluster_with_registry \
+push_image_to_registry start_deployment
 
 # Variables
 docker_image_name = explorecalifornia
@@ -11,7 +12,7 @@ cluster_name = explorecalifornia
 registry_name = local-registry
 kind_config = './kind_config.yml'
 kind_configmap = './kind_configmap.yml'
-
+server_name = localhost:5000
 
 #Rules
 run_website:
@@ -49,7 +50,16 @@ connect_registry_to_kind: connect_kind_network_with_local_registry
 	kubectl apply -f $(kind_configmap)
 
 create_kind_cluster_with_registry:
-	$(MAKE) create_kind_cluster && $(MAKE) connect_registry_to_kind
+	$(MAKE) create_kind_cluster && $(MAKE) connect_registry_to_kind && $(MAKE) push_image_to_registry
 
 delete_kind_cluster_with_registry:
 	$(MAKE) delete_kind_cluster && $(MAKE) delete_docker_registry
+
+push_image_to_registry: 
+	docker push $(server_name)/$(docker_image_name)
+
+start_deployment:
+	kubectl apply -f deployment.yml && \
+	kubectl apply -f service.yml && \
+	kubectl apply -f ingress.yml && \
+	kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
